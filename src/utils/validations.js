@@ -11,7 +11,7 @@ export const emailValidation = {
 };
 
 
-export const namelValidation = {
+export const usernamelValidation = {
   required: true,
   minLength: {value: 2, message: "El mínimo de caracteres es 2"},
   maxLength: {value: 25, message: "El mínimo de caracteres es 25"},

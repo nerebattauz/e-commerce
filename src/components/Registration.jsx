@@ -1,5 +1,5 @@
 import {
-  VStack,
+  Card,
   Button,
   FormControl,
   FormLabel,
@@ -11,40 +11,42 @@ import {
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { usernamelValidation, passwordValidation, emailValidation } from "../utils/validations";
 
-import { namelValidation, passwordValidation, emailValidation } from "../utils/passwordValidation";
 
-const Login = () => {
+const Registration = () => {
   const { register, handleSubmit, formState, watch } = useForm();
+  const {login} = useContext(UserContext)
 
-  const login = (data) => {
-    alert("logueado");
-    console.log(data);
-  };
+  const onSubmit = (data) => {
+    login(data)
+  }
 
   const emailWatch = watch("email")
   console.log(emailWatch)
-  
+
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const { errors } = formState;
+
   return (
-    <VStack as="form" onSubmit={handleSubmit(login)}>
-      <Heading fontSize="lg" fontWeight="bold">
-        Iniciar sesión
+    <Card as="form" onSubmit={handleSubmit(onSubmit)} p="60px" gap="30px">
+      <Heading fontSize="xl" fontWeight="bold">
+        Crear cuenta
       </Heading>
 
-      <FormControl isInvalid={!!errors.name}>
+      <FormControl isInvalid={!!errors.username}>
       <FormLabel>Tu nombre</FormLabel>
         <InputGroup>
           <Input
             type="text"
             placeholder="Nombre"
-            {...register("name", namelValidation)}
+            {...register("username", usernamelValidation)}
           />
         </InputGroup>
-        <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+        <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
       </FormControl>
 
       <FormControl isInvalid={!!errors.email}>
@@ -68,7 +70,7 @@ const Login = () => {
             {...register("password", passwordValidation)}
           />
           <InputRightElement width="4.5rem">
-            <Button h="1.75rem" size="sm" onClick={handleClick}>
+            <Button h="1.75rem" size="sm" mr="1" onClick={handleClick}>
               {show ? "Ocultar" : "Mostrar"}
             </Button>
           </InputRightElement>
@@ -76,9 +78,9 @@ const Login = () => {
         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
       </FormControl>
 
-      <Button type="submit">Ingresar</Button>
-    </VStack>
+      <Button type="submit" colorScheme="teal">Ingresar</Button>
+    </Card>
   );
 };
 
-export default Login;
+export default Registration;
