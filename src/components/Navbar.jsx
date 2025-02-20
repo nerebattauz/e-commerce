@@ -8,6 +8,7 @@ import { HStack, Image, Button, AlertDialog,
   useDisclosure,
   FormControl,
   FormLabel,
+  Input,
   FormErrorMessage,
   FormHelperText, } from "@chakra-ui/react";
 import logo from "../assets/react.svg";
