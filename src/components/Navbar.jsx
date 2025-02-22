@@ -17,7 +17,6 @@ import {
   FormHelperText,
 } from "@chakra-ui/react";
 import logo from "../assets/react.svg";
-import { useForm } from "react-hook-form";
 
 const Navbar = () => {
   return (
