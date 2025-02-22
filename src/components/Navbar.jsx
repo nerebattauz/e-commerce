@@ -3,31 +3,21 @@ import {
   HStack,
   Image,
   Button,
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogContent,
-  AlertDialogOverlay,
-  useDisclosure,
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-  FormHelperText,
 } from "@chakra-ui/react";
 import logo from "../assets/react.svg";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
     <HStack w="100%" justifyContent={"space-between"}>
       <Image src={logo}></Image>
       <div>
-        <Button>Home</Button>
-        <Button>Productos</Button>
+        <NavLink to={"/"} className={({isActive}) => (isActive?"active":"")}>Home</NavLink>
+        <NavLink to={"/products"} className={({isActive}) => (isActive?"active":"")}>Productos</NavLink>
       </div>
       <>
-        <Button>Iniciar sesión</Button>
+      <NavLink to={"/register"} className={({isActive}) => (isActive?"active":"")}>Register</NavLink>
+        <NavLink to={"/login"} className={({isActive}) => (isActive?"active":"")}>Iniciar sesión</NavLink>
       </>
     </HStack>
   );

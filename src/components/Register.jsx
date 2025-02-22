@@ -16,7 +16,7 @@ import { UserContext } from "../context/UserContext";
 import { usernamelValidation, passwordValidation, emailValidation } from "../utils/validations";
 
 
-const Registration = () => {
+const Register = () => {
   const { register, handleSubmit, formState, watch } = useForm();
   const {login} = useContext(UserContext)
 
@@ -83,4 +83,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default Register;
