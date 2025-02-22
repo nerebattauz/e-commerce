@@ -3,19 +3,27 @@ import Product from "./components/Product";
 import { CartProvider } from "./context/CartContext";
 import { UserProvider, UserContext } from "./context/UserContext.jsx";
 import Cart from "./components/Cart";
-import Registration from "./components/Registration.jsx";
+import Register from "./components/Register.jsx";
 import UserDashboard from "./components/userDashboard.jsx";
 import { useContext } from "react";
 import ProductList from "./components/ProductList.jsx";
+import { Route, Routes } from "react-router-dom";
+import ProductDetails from "./pages/ProductDetails.jsx";
 function AppContent() {
   const { user } = useContext(UserContext);
 
   return (
     <CartProvider>
-      {user ? <UserDashboard /> : <Registration />}
+      <Routes>
+        <Route path="/" element={<Product />} />
+        <Route path="/products" element={<ProductList />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/checkout" element={<Cart />} />
+        <Route path="/error404" element={<ProductList />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={user ? <UserDashboard /> : <Register />} />
+      </Routes>
       <Cart />
-      <ProductList />
-      <Product />
     </CartProvider>
   );
 }

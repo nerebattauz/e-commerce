@@ -12,13 +12,14 @@ import {
 } from "@chakra-ui/react";
 
 import { usePagination } from "../hooks/usePagination";
+import { NavLink } from "react-router-dom";
 
 const ProductList = () => {
     const {currentPage, next, prev} = usePagination()
   const { data, loading, error } = useFetch
     (`https://rickandmortyapi.com/api/character?page=${currentPage}`/* https://randomfox.ca/floof?page=${currentpage} */
   );
-  
+
   if (loading) return;
   return (
     <div>
@@ -48,6 +49,7 @@ const ProductList = () => {
               {product.name}
             </Text>
             <Button>Agregar al carrito</Button>
+            <Button> <NavLink to={`/products/${product.id}`}>Ver más</NavLink></Button>
           </Card>
         ))}
         <ButtonGroup>
