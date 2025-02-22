@@ -1,4 +1,5 @@
 import {
+  ButtonGroup,
   Button,
   Drawer,
   DrawerOverlay,
@@ -9,28 +10,36 @@ import {
   Text,
   Stack,
   Box,
-  DrawerFooter
+  DrawerFooter,
 } from "@chakra-ui/react";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement] = useState("right");
-  const { cart, deleteItem, totalProducts } = useContext(CartContext);
+  const { cart, deleteItem, totalProducts, updateQuantity } = useContext(CartContext);
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="teal" position="fixed" bottom="20px" right="20px">Ver carrito {totalProducts()}</Button>
+      <Button
+        onClick={onOpen}
+        colorScheme="teal"
+        position="fixed"
+        bottom="20px"
+        right="20px"
+      >
+        Ver carrito ({totalProducts()})
+      </Button>
       <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader>Carrito de compras</DrawerHeader>
+          <DrawerHeader>Carrito de compras {totalProducts}</DrawerHeader>
           <DrawerBody>
-          {cart.length === 0 ? (
-            <Text>No hay productos en tu carrito</Text>
-          ) : (
-            <Stack spacing={4}>
+            {cart.length === 0 ? (
+              <Text>No hay productos en tu carrito</Text>
+            ) : (
+              <Stack spacing={4}>
                 {cart.map((product) => (
                   <Box
                     key={product.id}
@@ -42,7 +51,26 @@ const Cart = () => {
                     <Text fontSize="lg" fontWeight="bold">
                       {product.name}
                     </Text>
-                    <Text>Cantidad: {product.quantity}</Text>
+                    <Text>Cantidad:</Text>
+
+                    <ButtonGroup>
+                      <Button
+                        onClick={() => {
+                          if (product.quantity > 1) {
+                            updateQuantity(product.id, product.quantity - 1);
+                          }
+                        }}
+                      >
+                        -
+                      </Button>
+                      <Text>{product.quantity}</Text>
+                      <Button
+                        onClick={() => updateQuantity(product.id, product.quantity + 1)}
+                      >
+                        +
+                      </Button>
+                    </ButtonGroup>
+
                     <Text>Precio: ${product.price}</Text>
                     <Button
                       mt={2}
@@ -54,13 +82,12 @@ const Cart = () => {
                   </Box>
                 ))}
               </Stack>
-          )}
-        </DrawerBody>
-        
-        
-        <DrawerFooter>
-        <Button onClick={onClose}>Cerrar</Button>
-        </DrawerFooter>
+            )}
+          </DrawerBody>
+
+          <DrawerFooter>
+            <Button onClick={onClose}>Cerrar</Button>
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>
