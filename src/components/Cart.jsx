@@ -17,11 +17,11 @@ import { CartContext } from "../context/CartContext";
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement] = useState("right");
-  const { cart, deleteItem } = useContext(CartContext);
+  const { cart, deleteItem, totalProducts } = useContext(CartContext);
 
   return (
     <>
-      <Button onClick={onOpen} colorScheme="teal" position="fixed" bottom="20px" right="20px">Ver carrito ({cart.length})</Button>
+      <Button onClick={onOpen} colorScheme="teal" position="fixed" bottom="20px" right="20px">Ver carrito {totalProducts()}</Button>
       <Drawer placement={placement} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
@@ -42,6 +42,7 @@ const Cart = () => {
                     <Text fontSize="lg" fontWeight="bold">
                       {product.name}
                     </Text>
+                    <Text>Cantidad: {product.quantity}</Text>
                     <Text>Precio: ${product.price}</Text>
                     <Button
                       mt={2}
