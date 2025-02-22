@@ -6,7 +6,7 @@ import Cart from "./components/Cart";
 import Registration from "./components/Registration.jsx";
 import UserDashboard from "./components/userDashboard.jsx";
 import { useContext } from "react";
-
+import ProductList from "./components/ProductList.jsx";
 function AppContent() {
   const { user } = useContext(UserContext);
 
@@ -14,6 +14,7 @@ function AppContent() {
     <CartProvider>
       {user ? <UserDashboard /> : <Registration />}
       <Cart />
+      <ProductList />
       <Product />
     </CartProvider>
   );
