@@ -9,6 +9,7 @@ import { useContext } from "react";
 import ProductList from "./components/ProductList.jsx";
 import { Route, Routes } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails.jsx";
+import Error404 from "./components/Error404.jsx";
 function AppContent() {
   const { user } = useContext(UserContext);
 
@@ -19,9 +20,9 @@ function AppContent() {
         <Route path="/products" element={<ProductList />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<Cart />} />
-        <Route path="/error404" element={<ProductList />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={user ? <UserDashboard /> : <Register />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
       <Cart />
     </CartProvider>
