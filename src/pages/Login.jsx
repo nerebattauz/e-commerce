@@ -11,18 +11,22 @@ import {
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
-import { useState, useContext } from "react";
-import { UserContext, useUser } from "../context/UserContext";
-import { usernamelValidation, passwordValidation, emailValidation } from "../utils/validations";
+import { useState } from "react";
+import { useUser } from "../context/UserContext";
+import { passwordValidation, emailValidation } from "../utils/validations";
 
 
 const Login = () => {
   const { register, handleSubmit, formState, watch } = useForm();
-  const {registerUser, login} = useUser();
+  const {login, loginGoogle} = useUser();
 
-  const onSubmit = (data) => {
-    login(data)
-  }
+  const onSubmit = (data, type) => {
+    if (type === "email") {
+      login(data);
+    } else if (type === "google") {
+      loginGoogle();
+    }
+  };
 
   const emailWatch = watch("email")
   console.log(emailWatch)
@@ -36,18 +40,6 @@ const Login = () => {
       <Heading fontSize="xl" fontWeight="bold">
         Iniciar sesión
       </Heading>
-
-      <FormControl isInvalid={!!errors.username}>
-      <FormLabel>Tu nombre</FormLabel>
-        <InputGroup>
-          <Input
-            type="text"
-            placeholder="Nombre"
-            {...register("username", usernamelValidation)}
-          />
-        </InputGroup>
-        <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
-      </FormControl>
 
       <FormControl isInvalid={!!errors.email}>
         <FormLabel>Tu e-mail</FormLabel>
@@ -78,7 +70,8 @@ const Login = () => {
         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
       </FormControl>
 
-      <Button type="submit" colorScheme="teal">Ingresar</Button>
+      <Button onClick={handleSubmit((data) => onSubmit(data, "email"))} colorScheme="teal">Ingresar</Button>
+      <Button onClick={() => onSubmit(null, "google")} colorScheme="blue">Iniciar sesión con Google</Button>
     </Card>
   );
 };
