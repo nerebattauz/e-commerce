@@ -19,11 +19,14 @@ import { usernamelValidation, passwordValidation, emailValidation } from "../uti
 const Register = () => {
   const { register, handleSubmit, formState, watch } = useForm();
   const {registerUser} = useUser();
-  const {login} = useContext(UserContext)
 
-  const onSubmit = (data) => {
-    registerUser(data)
-  }
+  const onSubmit = (data, type) => {
+    if (type === "email") {
+      register(data);
+    } else if (type === "google") {
+      loginGoogle();
+    }
+  };
 
   const emailWatch = watch("email")
   console.log(emailWatch)
@@ -79,7 +82,8 @@ const Register = () => {
         <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
       </FormControl>
 
-      <Button type="submit" colorScheme="teal">Ingresar</Button>
+      <Button onClick={handleSubmit((data) => onSubmit(data, "email"))} colorScheme="teal">Ingresar</Button>
+      <Button onClick={() => onSubmit(null, "google")} colorScheme="blue">Iniciar sesión con Google</Button>
     </Card>
   );
 };
