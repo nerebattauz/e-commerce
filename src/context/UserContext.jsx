@@ -1,33 +1,44 @@
+import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-
-const user_ = {
-  username: "",
-  email: "nereebattauz@gmail.com",
-  password: "naek1412",
-};
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase/config";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
-  const login = ({ username, email, password }) => {
-    if (email == user_.email && password == user_.password) {
-      setUser({ username, email, password });
-      setError(null);
-    } else {
-      setError("El usuario o contraseña son incorrectos");
+
+  const login = ({ email, password }) => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  };
+
+  const registerUser = async ({ email, password }) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      return user;
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
     }
   };
-
-  const logout = () => {
-    setUser(null);
-  };
-
   return (
-    <UserContext.Provider value={{ user, login, logout, error }}>
+    <UserContext.Provider value={{ user, registerUser, login }}>
       {children}
     </UserContext.Provider>
   );
 };
+
+export const useUser = () => useContext(UserContext);
