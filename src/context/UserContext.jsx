@@ -35,6 +35,7 @@ export const UserProvider = ({ children }) => {
         password
       );
       const user = userCredential.user;
+      setUser(user)
       return user;
     } catch (error) {
       const errorCode = error.code;

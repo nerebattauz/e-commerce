@@ -17,7 +17,7 @@ import { passwordValidation, emailValidation } from "../utils/validations";
 
 
 const Login = () => {
-  const { handleSubmit, formState, watch, register } = useForm();
+  const { handleSubmit, formState, register } = useForm();
   const {login, loginGoogle} = useUser();
 
   const onSubmit = (data, type) => {
@@ -28,8 +28,6 @@ const Login = () => {
       loginGoogle();
     } 
   };
-
-  const emailWatch = watch("email")
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
