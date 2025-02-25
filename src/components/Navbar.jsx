@@ -18,6 +18,7 @@ const Navbar = () => {
       <>
       <NavLink to={"/register"} className={({isActive}) => (isActive?"active":"")}>Register</NavLink>
         <NavLink to={"/login"} className={({isActive}) => (isActive?"active":"")}>Iniciar sesión</NavLink>
+        <NavLink to={"/logout"} className={({isActive}) => (isActive?"active":"")}>Cerrar sesión</NavLink>
         <NavLink to={"/account"} className={({isActive}) => (isActive?"active":"")}>Mis pedidos</NavLink>
       </>
     </HStack>

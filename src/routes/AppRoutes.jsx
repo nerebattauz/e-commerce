@@ -11,6 +11,7 @@ import ProductList from "../components/ProductList.jsx";
 import Cart from "../components/Cart";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.jsx";
+import Logout from "../pages/Logout.jsx";
 
 const AppRoutes = () => {
   const { user } = useContext(UserContext);
@@ -22,6 +23,7 @@ const AppRoutes = () => {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<Cart />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/logout" element={<Logout />} />
         <Route
           path="/login"
           element={user ? <UserDashboard /> : <Login />}

@@ -17,19 +17,19 @@ import { passwordValidation, emailValidation } from "../utils/validations";
 
 
 const Login = () => {
-  const { register, handleSubmit, formState, watch } = useForm();
+  const { handleSubmit, formState, watch, register } = useForm();
   const {login, loginGoogle} = useUser();
 
   const onSubmit = (data, type) => {
     if (type === "email") {
       login(data);
+      console.log(data)
     } else if (type === "google") {
       loginGoogle();
-    }
+    } 
   };
 
   const emailWatch = watch("email")
-  console.log(emailWatch)
 
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);

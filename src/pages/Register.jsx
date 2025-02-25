@@ -22,7 +22,7 @@ const Register = () => {
 
   const onSubmit = (data, type) => {
     if (type === "email") {
-      register(data);
+      registerUser(data);
     } else if (type === "google") {
       loginGoogle();
     }
