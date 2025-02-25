@@ -14,6 +14,8 @@ import {
 
 import { usePagination } from "../hooks/usePagination";
 import { NavLink } from "react-router-dom";
+import Product from "./Product";
+import Products from "../pages/Products";
 
 const ProductList = () => {
   const { currentPage, next, prev } = usePagination();
@@ -23,7 +25,9 @@ const ProductList = () => {
 
   if (loading) return;
   return (
+    
     <div>
+      <Products />
       {loading && (
         <Stack>
           <Spinner size="lg" />

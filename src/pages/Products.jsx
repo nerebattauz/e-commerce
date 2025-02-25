@@ -1,10 +1,33 @@
+import { useState, useEffect } from "react";
+import { getProducts } from "../services/products";
+import { VStack , Box} from "@chakra-ui/react";
 
 const Products = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-export default Products
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await getProducts();
+        setData(data);
+      } catch {
+        (error) => console.log(error);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
+  return (
+    <Box>
+      {data.map((product) => (
+        <VStack key={product.id}>{product.name} </VStack>
+      ))}
+    </Box>
+  );
+};
+
+export default Products;
