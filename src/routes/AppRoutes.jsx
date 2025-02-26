@@ -12,8 +12,6 @@ import Cart from "../components/Cart";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.jsx";
 import Logout from "../pages/Logout.jsx";
-import Navbar from "../components/Navbar.jsx";
-import Footer from "../components/footer.jsx";
 import Products from "../pages/Products.jsx";
 import Home from "../pages/Home.jsx";
 const AppRoutes = () => {
@@ -21,7 +19,6 @@ const AppRoutes = () => {
 
   return (
     <>
-      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
@@ -38,7 +35,6 @@ const AppRoutes = () => {
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
-      <Footer />
     </>
   );
 };
