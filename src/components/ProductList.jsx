@@ -1,4 +1,3 @@
-import { useFetch } from "../hooks/useFetch";
 import {
   Stack,
   Spinner,
@@ -6,61 +5,75 @@ import {
   Alert,
   AlertIcon,
   Card,
+  CardBody,
+  CardFooter,
   Button,
   Image,
   ButtonGroup,
-  Wrap
+  Wrap,
+  Heading,
+  Divider,
 } from "@chakra-ui/react";
 
+
 import { usePagination } from "../hooks/usePagination";
+import { useFetch } from "../hooks/useFetch";
 import { NavLink } from "react-router-dom";
-import Product from "./Product";
-import Products from "../pages/Products";
+
 
 const ProductList = () => {
-  const { currentPage, next, prev } = usePagination();
-  const { data, loading, error } = useFetch(
-    `https://rickandmortyapi.com/api/character?page=${currentPage}` /* https://randomfox.ca/floof?page=${currentpage} */
-  );
+  
+  const { data, loading, error } = useFetch();
+  const { next, prev } = usePagination();
 
-  if (loading) return;
   return (
-    
-    <div>
-      <Products />
+    <Wrap>
       {loading && (
         <Stack>
           <Spinner size="lg" />
           <Text>Cargando productos...</Text>
         </Stack>
       )}
+
       {error && (
         <Alert status="error">
           <AlertIcon />
-          Ocurrió un error al cargar los productos
+          Ocurrió un error al cargar los productos.
         </Alert>
       )}
-      <Wrap>
-        {data &&
-          data.results.map((product) => (
-            <Card key={product.id}>
-              <Image
-                src={product.image}
-                alt={product.name}
-                borderRadius="md"
-                mb="4"
-              />
-              <Text fontSize="xl" fontWeight="bold" textAlign="center">
-                {product.name}
-              </Text>
-              <Button>Agregar al carrito</Button>
-              <Button>
-                {" "}
-                <NavLink to={`/products/${product.id}`}>Ver más</NavLink>
-              </Button>
-            </Card>
-          ))}
-      </Wrap>
+
+      {data &&
+        data.map((product) => (
+          <Card maxW="sm" key={product.id}>
+            <CardBody>
+              <Image src={product.image} alt={product.name} borderRadius="lg" />
+              <Stack mt="6" spacing="3">
+                <Heading size="md">{product.name}</Heading>
+                <Text>{product.description}</Text>
+                <Text color="blue.600" fontSize="2xl">
+                  ${product.price}
+                </Text>
+              </Stack>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <ButtonGroup spacing="2">
+                <Button
+                  as={NavLink}
+                  to={`/products/${product.id}`}
+                  variant="solid"
+                  colorScheme="blue"
+                >
+                  Ir a detalles
+                </Button>
+                <Button variant="ghost" colorScheme="blue">
+                  Agregar al carrito
+                </Button>
+              </ButtonGroup>
+            </CardFooter>
+          </Card>
+        ))}
+
       <ButtonGroup>
         <Button colorScheme="teal" onClick={prev}>
           Anterior
@@ -69,7 +82,7 @@ const ProductList = () => {
           Siguiente
         </Button>
       </ButtonGroup>
-    </div>
+    </Wrap>
   );
 };
 

@@ -10,7 +10,6 @@ export const getProducts = async () => {
       products.push({ ...doc.data(), id: doc.id });
     });
 
-    console.log("Productos obtenidos:", products);
     return products; 
   } catch (error) {
     console.error("Error obteniendo productos:", error);
