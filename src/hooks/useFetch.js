@@ -1,26 +1,28 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { getProducts } from "../services/products";
 
 export const useFetch = (url) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
+  
+   useEffect(() => {
+    const getData = async () => {
       try {
-        const response = await axios.get(url);
-        setData(response.data)
-        setLoading(false);
+        const data = await getProducts();
+        setData(data);
+        console.log(data);
       } catch (error) {
-        setError(error);
+        (error) => console.log(error);
+        setError(true);
         setLoading(false);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    getData();
   }, [url]);
-  
+
 return {
     data, loading, error
 }
