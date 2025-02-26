@@ -1,9 +1,12 @@
+import Cart from "../components/Cart"
+import ProductList from "../components/ProductList"
 
 const Home = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <Cart/>
+      <ProductList/>
+    </>
   )
 }
 

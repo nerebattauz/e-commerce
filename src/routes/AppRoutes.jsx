@@ -15,7 +15,7 @@ import Logout from "../pages/Logout.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/footer.jsx";
 import Products from "../pages/Products.jsx";
-
+import Home from "../pages/Home.jsx";
 const AppRoutes = () => {
   const { user } = useContext(UserContext);
 
@@ -23,7 +23,7 @@ const AppRoutes = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Product />} />
+        <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<Cart />} />

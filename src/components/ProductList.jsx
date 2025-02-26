@@ -13,21 +13,25 @@ import {
   Wrap,
   Heading,
   Divider,
+  Center,
 } from "@chakra-ui/react";
 
 
 import { usePagination } from "../hooks/usePagination";
 import { useFetch } from "../hooks/useFetch";
 import { NavLink } from "react-router-dom";
-
+import { CartContext } from "../context/CartContext";
+import { useContext } from "react";
 
 const ProductList = () => {
   
   const { data, loading, error } = useFetch();
   const { next, prev } = usePagination();
+const {addToCart} = useContext(CartContext)
 
   return (
-    <Wrap>
+    <>
+      <Wrap justify="center" my={10}>
       {loading && (
         <Stack>
           <Spinner size="lg" />
@@ -66,14 +70,14 @@ const ProductList = () => {
                 >
                   Ir a detalles
                 </Button>
-                <Button variant="ghost" colorScheme="blue">
+                <Button variant="ghost" colorScheme="blue" onClick={() => {addToCart(product)}}>
                   Agregar al carrito
                 </Button>
               </ButtonGroup>
             </CardFooter>
           </Card>
         ))}
-
+</Wrap>
       <ButtonGroup>
         <Button colorScheme="teal" onClick={prev}>
           Anterior
@@ -82,7 +86,7 @@ const ProductList = () => {
           Siguiente
         </Button>
       </ButtonGroup>
-    </Wrap>
+    </>
   );
 };
 
