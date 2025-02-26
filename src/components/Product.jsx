@@ -1,4 +1,4 @@
-import { Card, CardBody, VStack, HStack, Button, Heading, Image, Text, Stack } from "@chakra-ui/react";
+import { Card, CardBody, VStack, HStack, Button, Heading, Image, Text, Stack} from "@chakra-ui/react";
 import { useContext} from "react";
 import { CartContext } from "../context/CartContext";
 import { products } from "../data/products";
