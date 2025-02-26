@@ -10,6 +10,7 @@ import {
   Text,
   Stack,
   Box,
+  Image,
   DrawerFooter,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
@@ -21,6 +22,7 @@ const Cart = () => {
   const { cart, deleteItem, totalProducts, updateQuantity, totalPrice } =
     useContext(CartContext);
 
+  const onSubmit = () => {};
   return (
     <>
       <Button
@@ -29,6 +31,7 @@ const Cart = () => {
         position="fixed"
         bottom="20px"
         right="20px"
+        zIndex="10"
       >
         Ver carrito ({totalProducts()})
       </Button>
@@ -51,6 +54,7 @@ const Cart = () => {
                       borderColor="gray.200"
                       borderRadius="md"
                     >
+                      <Image src={product.image} />
                       <Text fontSize="lg" fontWeight="bold">
                         {product.name}
                       </Text>
@@ -92,8 +96,9 @@ const Cart = () => {
             <Text size="lg">Total: ${totalPrice()} </Text>
           </DrawerBody>
 
-          <DrawerFooter>
+          <DrawerFooter gap={4}>
             <Button onClick={onClose}>Cerrar</Button>
+            <Button onClick={onSubmit}>Iniciar compra</Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import Error404 from "../components/Error404";
 import {
   Button,
+  ButtonGroup,
+  VStack,
   Stack,
   Spinner,
   Text,
@@ -13,11 +15,13 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useFetch } from "../hooks/useFetch";
-import { div } from "framer-motion/client";
+import { CartContext } from "../context/CartContext";
+import { useContext } from "react";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { data, loading, error } = useFetch();
+  const { updateQuantity } = useContext(CartContext);
   const navigate = useNavigate();
   console.log(id);
 
@@ -27,9 +31,9 @@ const ProductDetails = () => {
 
   if (loading) {
     return (
-      <Stack>
+      <VStack justify="center">
         <Spinner size="lg" />
-      </Stack>
+      </VStack>
     );
   }
 
@@ -38,43 +42,85 @@ const ProductDetails = () => {
   }
 
   return (
-    <Stack>
+    <VStack>
       {product ? (
         <Card
           key={product.id}
           direction={{ base: "column", sm: "row" }}
           overflow="hidden"
           variant="outline"
+          my={6}
+          gap={6}
         >
           <Image
             objectFit="cover"
-            maxW={{ base: "100%", sm: "200px" }}
+            /* maxW={{ base: "100%", sm: "200px" }} */
+            w={"50%"}
             src={product.image}
             alt={product.name}
           />
 
-          <Stack>
+          <VStack align="start" w={"50%"} my={10}>
             <CardBody>
-              <Heading size="md">{product.name}</Heading>
+              <Heading align="start" size="md">
+                {product.name}
+              </Heading>
 
-              <Text py="2">{product.description}</Text>
+              <Text align="start" py="2">
+                {product.description}
+              </Text>
+
+              <Text align="start" py="2">
+                Cantidad por pack: {product.characteristics.quantity}
+              </Text>
+              <Text align="start" py="2">
+                Tamaño: {product.characteristics.size}
+              </Text>
+              <Text align="start" py="2">
+                Papel: {product.characteristics.paper}
+              </Text>
+
+              <Text align="start" py="2">
+                Tipo de impresión: {product.characteristics.print}
+              </Text>
+
+              <Text>Cantidad:</Text>
+
+              <ButtonGroup>
+                <Button
+                  onClick={() => {
+                    if (product.quantity > 1) {
+                      updateQuantity(product.id, product.quantity - 1);
+                    }
+                  }}
+                >
+                  -
+                </Button>
+                <Text>{product.quantity}</Text>
+                <Button
+                  onClick={() => {
+                    updateQuantity(product.id, product.quantity + 1);
+                  }}
+                >
+                  +
+                </Button>
+              </ButtonGroup>
             </CardBody>
 
-            <CardFooter>
+            <CardFooter gap={4}>
               <Button variant="solid" colorScheme="blue">
                 Agregar al carrito{" "}
               </Button>
+              <Button onClick={() => navigate(-1, { replace: true })}>
+                Volver a la página anterior
+              </Button>
             </CardFooter>
-          </Stack>
+          </VStack>
         </Card>
       ) : (
         <Error404 />
       )}
-
-      <Button onClick={() => navigate(-1, { replace: true })}>
-        Volver a la página anterior
-      </Button>
-    </Stack>
+    </VStack>
   );
 };
 
