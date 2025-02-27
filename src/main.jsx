@@ -1,19 +1,20 @@
 import { createRoot } from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 import "./index.css";
-import App from "./App.jsx";
+import theme from "./theme/theme.js";
 import { CartProvider } from "./context/CartContext.jsx";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./context/UserContext.jsx";
+import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <UserProvider>
-      <ChakraProvider>
+  <ChakraProvider theme={theme}>
+    <BrowserRouter>
+      <UserProvider>
         <CartProvider>
           <App />
         </CartProvider>
-      </ChakraProvider>
-    </UserProvider>
-  </BrowserRouter>
+      </UserProvider>
+    </BrowserRouter>
+  </ChakraProvider>
 );

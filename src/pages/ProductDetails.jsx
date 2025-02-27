@@ -17,6 +17,7 @@ import {
 import { useFetch } from "../hooks/useFetch";
 import { CartContext } from "../context/CartContext";
 import { useContext } from "react";
+import Cart from "../components/Cart";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -42,15 +43,15 @@ const ProductDetails = () => {
   }
 
   return (
+    
     <VStack>
+      <Cart/>
       {product ? (
         <Card
           key={product.id}
           direction={{ base: "column", sm: "row" }}
           overflow="hidden"
           variant="outline"
-          my={6}
-          gap={6}
         >
           <Image
             objectFit="cover"
@@ -60,44 +61,45 @@ const ProductDetails = () => {
             alt={product.name}
           />
 
-          <VStack align="start" w={"50%"} my={10}>
-            <CardBody>
+          <VStack align="start" w={"50%"} p={50}>
+            <CardBody spacing={20}>
               <Heading align="start" size="md">
                 {product.name}
               </Heading>
 
-              <Text align="start" py="2">
+              <div spacing={"30px"}>
+              <Text py="2">
                 {product.description}
               </Text>
 
-              <Text align="start" py="2">
+              <Text py="2">
                 Cantidad por pack: {product.characteristics.quantity}
               </Text>
-              <Text align="start" py="2">
+              <Text py="2">
                 Tamaño: {product.characteristics.size}
               </Text>
-              <Text align="start" py="2">
+              <Text py="2">
                 Papel: {product.characteristics.paper}
               </Text>
 
-              <Text align="start" py="2">
+              <Text py="2">
                 Tipo de impresión: {product.characteristics.print}
               </Text>
 
               <Text>Cantidad:</Text>
 
               <ButtonGroup>
-                <Button
+                <Button variant="outlined"
                   onClick={() => {
                     if (product.quantity > 1) {
                       updateQuantity(product.id, product.quantity - 1);
                     }
                   }}
                 >
-                  -
+                 -
                 </Button>
-                <Text>{product.quantity}</Text>
-                <Button
+                <Text>{product.quantity} </Text>
+                <Button variant="outlined"
                   onClick={() => {
                     updateQuantity(product.id, product.quantity + 1);
                   }}
@@ -105,16 +107,22 @@ const ProductDetails = () => {
                   +
                 </Button>
               </ButtonGroup>
-            </CardBody>
 
-            <CardFooter gap={4}>
+              </div>
+
+              <ButtonGroup>
+              <Button
+                variant="outlined"
+                onClick={() => navigate(-1, { replace: true })}
+              >
+                Volver a la página anterior
+              </Button>
               <Button variant="solid" colorScheme="blue">
                 Agregar al carrito{" "}
               </Button>
-              <Button onClick={() => navigate(-1, { replace: true })}>
-                Volver a la página anterior
-              </Button>
-            </CardFooter>
+              </ButtonGroup>
+            </CardBody>
+
           </VStack>
         </Card>
       ) : (

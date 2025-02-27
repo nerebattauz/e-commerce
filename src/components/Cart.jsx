@@ -27,10 +27,9 @@ const Cart = () => {
     <>
       <Button
         onClick={onOpen}
-        colorScheme="teal"
+        variant={"solid"}
         position="fixed"
-        bottom="20px"
-        right="20px"
+        bottom={10}        right={20}
         zIndex="10"
       >
         Ver carrito ({totalProducts()})
