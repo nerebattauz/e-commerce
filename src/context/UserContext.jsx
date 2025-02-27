@@ -14,9 +14,6 @@ export const UserProvider = ({ children }) => {
   const provider = new GoogleAuthProvider();
   const toast = useToast()
   const navigate = useNavigate();
-  ///////////////////////
-
-
 
   const login = ({ email, password }) => {
     console.log(email, password)
@@ -64,7 +61,7 @@ export const UserProvider = ({ children }) => {
         duration: 3000,
         colorScheme: "green"
       })
-
+      navigate("/")
       
     } catch (error) {
       const errorCode = error.code;
@@ -94,7 +91,7 @@ export const UserProvider = ({ children }) => {
         duration: 3000,
         colorScheme: "green"
       })
-
+      navigate("/")
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -112,6 +109,7 @@ signOut(auth).then(() => {
     colorScheme: "green"
   })
   setUser(null)
+  navigate("/login")
 })
 .catch ((error)  => {
   const errorCode = error.code;
@@ -133,3 +131,5 @@ signOut(auth).then(() => {
 };
 
 export const useUser = () => useContext(UserContext);
+
+
