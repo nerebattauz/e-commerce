@@ -26,7 +26,7 @@ const AppRoutes = () => {
         <Route path="/checkout" element={<Cart />} />
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/login" element={user ? <UserDashboard /> : <Login />} />
+        <Route path="/login" element={user ? <Home /> : <Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/account" element={<Account />}>
             <Route path="cart" element={<Product />} />

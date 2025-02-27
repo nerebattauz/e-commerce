@@ -22,6 +22,7 @@ import { useFetch } from "../hooks/useFetch";
 import { NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import { useContext } from "react";
+import { TbBackground } from "react-icons/tb";
 
 const ProductList = () => {
   const { data, loading, error } = useFetch();
@@ -29,8 +30,8 @@ const ProductList = () => {
   const { addToCart } = useContext(CartContext);
 
   return (
-    <VStack justify={"space-between"}>
-      <Wrap justify="center">
+    <VStack  align={"center"} justify={"center"}>
+      <Wrap align={"center"} justify={"space-between"}>
         {loading && (
           <Stack>
             <Spinner size="lg" />
@@ -48,35 +49,34 @@ const ProductList = () => {
         {data && (
           <Wrap spacing={10}>
             {data.map((product) => (
-            <Card w={300} key={product.id}>
-              <CardBody>
+            <Card w={300} variant={"product"} key={product.id} >
+              <CardBody variant={"product"}>
                 <Image
                   src={product.image}
                   alt={product.name}
                   borderRadius="lg"
                 />
                 <Stack mt="6" spacing="3">
-                  <Heading size="md">{product.name}</Heading>
+                  <Heading size="sm">{product.name}</Heading>
 
-                  <Text color="blue.600" fontSize="2xl">
+                  <Text variant={"price"}>
                     ${product.price}
                   </Text>
                 </Stack>
               </CardBody>
               <Divider />
               <CardFooter>
-                <ButtonGroup spacing="2">
+                <ButtonGroup spacing="2" justifyContent={"center"}>
                   <Button
                     as={NavLink}
                     to={`/products/${product.id}`}
                     variant="solid"
                     colorScheme="blue"
                   >
-                    Ir a detalles
+                    Detalles
                   </Button>
                   <Button
-                    variant="ghost"
-                    colorScheme="blue"
+                    variant="outlined"
                     onClick={() => {
                       addToCart(product);
                     }}
@@ -90,14 +90,14 @@ const ProductList = () => {
           </Wrap>
         )}
       </Wrap>
-      <ButtonGroup>
+      {/* <ButtonGroup>
         <Button colorScheme="teal" onClick={prev}>
           Anterior
         </Button>
         <Button colorScheme="teal" onClick={next}>
           Siguiente
         </Button>
-      </ButtonGroup>
+      </ButtonGroup> */}
     </VStack>
   );
 };
