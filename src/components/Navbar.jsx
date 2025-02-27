@@ -41,7 +41,7 @@ const Navbar = () => {
           </HStack>
 
           <HStack spacing={2}>
-            <Button as={NavLink} onClick={logout()} variant={"solid"}>
+            <Button as={NavLink} onClick={logout} variant={"solid"}>
               Cerrar sesión
             </Button>
           </HStack>
