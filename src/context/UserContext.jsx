@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { useState } from "react";
 import { createContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useToast } from "@chakra-ui/react";
+import { redirect } from "react-router-dom";
 
 export const UserContext = createContext();
 
@@ -18,11 +20,25 @@ export const UserProvider = ({ children }) => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user)
-        console.log(user)
+        toast({
+          title: "Ingresaste a tu cuenta",
+          status: "info",
+          isClosable: false,
+          duration: 3000,
+          colorScheme: "green"
+        })
+        return user
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        toast({
+          title: "Datos incorrectos o el correo asociado a esta cuenta ya existe",
+          status: "info",
+          isClosable: false,
+          duration: 5000,
+          colorScheme: "red"
+        })
         console.error(errorCode, errorMessage)
       });
   };
@@ -36,11 +52,26 @@ export const UserProvider = ({ children }) => {
       );
       const user = userCredential.user;
       setUser(user)
+      toast({
+        title: "Ingresaste a tu cuenta",
+        status: "info",
+        isClosable: false,
+        duration: 3000,
+        colorScheme: "green"
+      })
       return user;
+      
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error(errorCode, errorMessage)
+      toast({
+        title: "El correo asociado a esta cuenta ya existe",
+        status: "info",
+        isClosable: false,
+        duration: 3000,
+        colorScheme: "red"
+      })
     }
   };
 
@@ -51,6 +82,14 @@ export const UserProvider = ({ children }) => {
       const token = credential.accessToken;
       const user = result.user;
       setUser(user)
+      toast({
+        title: "Ingresaste a tu cuenta",
+        status: "info",
+        isClosable: false,
+        duration: 3000,
+        colorScheme: "green"
+      })
+      return user
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -61,16 +100,25 @@ export const UserProvider = ({ children }) => {
     const logout = () => {
 signOut(auth).then(() => {
   toast({
-    title: "Sign off correct",
+    title: "Saliste de tu cuenta",
     status: "info",
     isClosable: false,
-    duration: 3000
+    duration: 3000,
+    colorScheme: "green"
   })
   setUser(null)
+  return user
 })
 .catch ((error)  => {
   const errorCode = error.code;
   const errorMessage = error.message;
+  toast({
+    title: "Error al cerrar sesión",
+    status: "info",
+    isClosable: false,
+    duration: 5000,
+    colorScheme: "red"
+  })
 })}
 
   return (

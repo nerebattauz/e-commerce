@@ -5,7 +5,7 @@ import Cart from "../components/Cart";
 const Products = () => {
 
   return (
-    <VStack p={20} flex={"flex"} align={"start"} spacing={10}>
+    <VStack p={20} flex={"flex"} align={"center"} spacing={10}>
       <Heading textAlign={"left"}>Productos</Heading>
       <HStack  >
       <Button variant={"chips"} bg={"pink"} borderRadius={"100px"}> Ver todos los productos </Button>

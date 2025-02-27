@@ -2,7 +2,6 @@ import {
   VStack,
   Button,
   Divider,
-  AbsoluteCenter,
   FormControl,
   FormLabel,
   Input,
@@ -36,17 +35,18 @@ const Login = () => {
   const { errors } = formState;
 
   return (
-    <Box>
+
       <VStack
         as="form"
         onSubmit={handleSubmit(onSubmit)}
         p={20}
-        flex={"flex"}
-        align={"start"}
+        align={"center"}
+        justify={"center"}
         spacing={10}
-        w={"50%"}
+        w={{ base: "90%", md: 700 }}
+    mx={"auto"}
       >
-        <Heading textAlign={"left"}>Iniciar sesión</Heading>
+        <Heading>Iniciar sesión</Heading>
 
         <FormControl isInvalid={!!errors.email}>
           <FormLabel>Tu e-mail</FormLabel>
@@ -93,7 +93,7 @@ const Login = () => {
           Iniciar sesión con Google
         </Button>
       </VStack>
-    </Box>
+
   );
 };
 
