@@ -1,5 +1,6 @@
 import {
-  ButtonGroup,
+  Card,
+  HStack,
   Button,
   Drawer,
   DrawerOverlay,
@@ -12,9 +13,11 @@ import {
   Box,
   Image,
   DrawerFooter,
+  VStack,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -23,13 +26,15 @@ const Cart = () => {
     useContext(CartContext);
 
   const onSubmit = () => {};
+
   return (
     <>
       <Button
         onClick={onOpen}
         variant={"solid"}
         position="fixed"
-        bottom={10}        right={20}
+        bottom={10}
+        right={20}
         zIndex="10"
       >
         Ver carrito ({totalProducts()})
@@ -42,25 +47,33 @@ const Cart = () => {
             {cart.length === 0 ? (
               <Text>No hay productos en tu carrito</Text>
             ) : (
-              <Stack spacing={4}>
+              <VStack>
                 {cart.map((product) => {
                   const subtotal = product.price * product.quantity;
                   return (
-                    <Box
-                      key={product.id}
-                      p={4}
-                      border="1px"
-                      borderColor="gray.200"
-                      borderRadius="md"
-                    >
+                    <Card key={product.id} p={4} align={"start"}>
                       <Image src={product.image} />
-                      <Text fontSize="lg" fontWeight="bold">
+                      <Text
+                        fontSize="md"
+                        color={"black"}
+                        fontWeight="bold"
+                        mt={2}
+                      >
                         {product.name}
                       </Text>
-                      <Text>Cantidad:</Text>
 
-                      <ButtonGroup>
+                      <HStack
+                        w={"100%"}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        gap={2}
+                        my={0}
+                      >
+                        <Text>Cantidad:</Text>
                         <Button
+                          p={1}
+                          color={"gray"}
+                          variant={"navButton"}
                           onClick={() => {
                             if (product.quantity > 1) {
                               updateQuantity(product.id, product.quantity - 1);
@@ -71,33 +84,44 @@ const Cart = () => {
                         </Button>
                         <Text>{product.quantity}</Text>
                         <Button
+                          p={1}
+                          color={"gray"}
+                          variant={"navButton"}
                           onClick={() => {
                             updateQuantity(product.id, product.quantity + 1);
                           }}
                         >
                           +
                         </Button>
-                      </ButtonGroup>
+                      </HStack>
 
-                      <Text>Precio: ${subtotal}</Text>
-                      <Button
-                        mt={2}
-                        colorScheme="red"
-                        onClick={() => deleteItem(product.id)}
+                      <HStack
+                        alignItems={"center"}
+                        w={"100%"}
+                        justify={"space-between"}
                       >
-                        Eliminar producto
-                      </Button>
-                    </Box>
+                        <Text>Precio: ${subtotal}</Text>
+                        <Button
+                          variant={"navButton"}
+                          color="red"
+                          onClick={() => deleteItem(product.id)}
+                        >
+                          <FaRegTrashAlt />
+                        </Button>
+                      </HStack>
+                    </Card>
                   );
                 })}
-              </Stack>
+              </VStack>
             )}
-            <Text size="lg">Total: ${totalPrice()} </Text>
           </DrawerBody>
-
-          <DrawerFooter gap={4}>
-            <Button onClick={onClose}>Cerrar</Button>
-            <Button onClick={onSubmit}>Iniciar compra</Button>
+          <Text mx={"30px"} size="3xl" fontWeight={"bold"} color={"black"}>
+            Total: ${totalPrice()}{" "}
+          </Text>
+          <DrawerFooter>
+            <Button w={"100%"} onClick={onSubmit}>
+              Iniciar compra
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
