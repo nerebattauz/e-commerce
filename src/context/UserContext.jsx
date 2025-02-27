@@ -1,18 +1,22 @@
-import { useContext } from "react";
-import { useState } from "react";
+import { useContext, useState} from "react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useToast } from "@chakra-ui/react";
-import { redirect } from "react-router-dom";
+
 
 export const UserContext = createContext();
+
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const provider = new GoogleAuthProvider();
   const toast = useToast()
+  const navigate = useNavigate();
+  ///////////////////////
+
+
 
   const login = ({ email, password }) => {
     console.log(email, password)
@@ -20,13 +24,14 @@ export const UserProvider = ({ children }) => {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user)
-        toast({
-          title: "Ingresaste a tu cuenta",
-          status: "info",
-          isClosable: false,
-          duration: 3000,
-          colorScheme: "green"
-        })
+              toast({
+        title: "Ingresaste a tu cuenta",
+        status: "info",
+        isClosable: false,
+        duration: 3000,
+        colorScheme: "green"
+      })
+      navigate("/")
         return user
       })
       .catch((error) => {
@@ -59,7 +64,7 @@ export const UserProvider = ({ children }) => {
         duration: 3000,
         colorScheme: "green"
       })
-      return user;
+
       
     } catch (error) {
       const errorCode = error.code;
@@ -89,7 +94,7 @@ export const UserProvider = ({ children }) => {
         duration: 3000,
         colorScheme: "green"
       })
-      return user
+
     }).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -107,7 +112,6 @@ signOut(auth).then(() => {
     colorScheme: "green"
   })
   setUser(null)
-  return user
 })
 .catch ((error)  => {
   const errorCode = error.code;

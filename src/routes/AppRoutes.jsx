@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import ProductDetails from "../pages/ProductDetails.jsx";
-import Error404 from "../components/Error404.jsx";
+import Error404 from "../pages/Error404.jsx";
 import ProtectedRoute from "../components/ProtectedRoute.jsx";
 import Product from "../components/Product";
 import Account from "../pages/Account.jsx";
@@ -11,7 +11,7 @@ import ProductList from "../components/ProductList.jsx";
 import Cart from "../components/Cart";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.jsx";
-import Logout from "../pages/Logout.jsx";
+
 import Products from "../pages/Products.jsx";
 import Home from "../pages/Home.jsx";
 const AppRoutes = () => {
@@ -25,7 +25,6 @@ const AppRoutes = () => {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/checkout" element={<Cart />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={user ? <Home /> : <Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/account" element={<Account />}>
