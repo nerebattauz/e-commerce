@@ -1,12 +1,16 @@
 import Cart from "../components/Cart"
+import Hero from "../components/hero"
 import ProductList from "../components/ProductList"
-import { Box } from "@chakra-ui/react"
+import { VStack, Heading } from "@chakra-ui/react"
 const Home = () => {
   return (
-    <Box p={20}>
+    
+    <VStack px={20} gap={50}>
       <Cart/>
+      <Hero/>
+      <Heading textAlign={"left"}>Productos destacados</Heading>
       <ProductList/>
-    </Box>
+    </VStack>
   )
 }
 

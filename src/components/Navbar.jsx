@@ -4,9 +4,10 @@ import { HStack, Image } from "@chakra-ui/react";
 import { NavLink, Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { Box, Flex, Button, Spacer } from "@chakra-ui/react";
+import Register from "../pages/Register";
 
 const Navbar = () => {
-  const { user } = useUser();
+  const { user, logout } = useUser();
 
   if (user) {
     return (
@@ -41,14 +42,14 @@ const Navbar = () => {
           </HStack>
 
           <HStack spacing={2}>
-            <Button as={NavLink} to="/logout" variant={"solid"}>
+            <Button as={NavLink} onClick={logout()} variant={"solid"}>
               Cerrar sesión
             </Button>
           </HStack>
         </Flex>
       </Box>
     );
-  } else {
+  } else { 
     return (
       <Box as="nav" px={20} py={5} mt={"0"} w="100%">
         <Flex align="center" justify="space-between">
@@ -76,7 +77,7 @@ const Navbar = () => {
           </HStack>
 
           <HStack spacing={2}>
-            <Button as={NavLink} to="/login" variant={"outlined"} bg={"none"}>
+            <Button as={NavLink} to="/register" variant={"outlined"} bg={"none"}>
               Registrarse
             </Button>
             <Button as={NavLink} to="/login" variant={"solid"}>

@@ -10,7 +10,7 @@ import {
   Button,
   Image,
   ButtonGroup,
-  Wrap,
+  SimpleGrid,
   Heading,
   Divider,
   Box,
@@ -30,26 +30,30 @@ const ProductList = () => {
   const { addToCart } = useContext(CartContext);
 
   return (
-    <VStack  align={"center"} justify={"center"}>
-      <Wrap align={"center"} justify={"space-between"}>
-        {loading && (
-          <Stack>
-            <Spinner size="lg" />
-            <Text>Cargando productos...</Text>
-          </Stack>
-        )}
+    <VStack align={"center"} justify={"center"}>
+      {loading && (
+        <Stack>
+          <Spinner size="lg" />
+          <Text>Cargando productos...</Text>
+        </Stack>
+      )}
 
-        {error && (
-          <Alert status="error">
-            <AlertIcon />
-            Ocurrió un error al cargar los productos.
-          </Alert>
-        )}
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          Ocurrió un error al cargar los productos.
+        </Alert>
+      )}
 
-        {data && (
-          <Wrap spacing={10}>
-            {data.map((product) => (
-            <Card w={300} variant={"product"} key={product.id} >
+      {data && (
+        <SimpleGrid
+          columns={{ base: 1, md: 2, lg: 3, xl: 4 }}
+          spacing={6}
+          w="full"
+          justifyContent="center"
+        >
+          {data.map((product) => (
+            <Card w={300} variant={"product"} key={product.id}>
               <CardBody variant={"product"}>
                 <Image
                   src={product.image}
@@ -59,9 +63,7 @@ const ProductList = () => {
                 <Stack mt="6" spacing="3">
                   <Heading size="sm">{product.name}</Heading>
 
-                  <Text variant={"price"}>
-                    ${product.price}
-                  </Text>
+                  <Text variant={"price"}>${product.price}</Text>
                 </Stack>
               </CardBody>
               <Divider />
@@ -86,10 +88,10 @@ const ProductList = () => {
                 </ButtonGroup>
               </CardFooter>
             </Card>
-            ))}
-          </Wrap>
-        )}
-      </Wrap>
+          ))}
+        </SimpleGrid>
+      )}
+
       {/* <ButtonGroup>
         <Button colorScheme="teal" onClick={prev}>
           Anterior
