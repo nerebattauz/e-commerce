@@ -85,7 +85,7 @@ const Login = () => {
           colorScheme="teal"
           w={"100%"}
         >
-          Ingresar
+          Iniciar sesión
         </Button>
         <Divider orientation="horizontal" borderColor={"gray"} border={"1px"}/>
 

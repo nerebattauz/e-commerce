@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
-import Error404 from "../components/Error404";
+import Error404 from "../pages/Error404";
 import {
   Button,
   ButtonGroup,

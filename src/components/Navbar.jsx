@@ -4,7 +4,6 @@ import { HStack, Image } from "@chakra-ui/react";
 import { NavLink, Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { Box, Flex, Button, Spacer } from "@chakra-ui/react";
-import Register from "../pages/Register";
 
 const Navbar = () => {
   const { user, logout } = useUser();
