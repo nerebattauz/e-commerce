@@ -1,9 +1,16 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useMemo } from "react";
+import { useMemo, useContext, useRef } from "react";
 import Error404 from "../pages/Error404";
 import {
   Button,
   ButtonGroup,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
   VStack,
   Stack,
   Spinner,
@@ -11,28 +18,49 @@ import {
   Card,
   CardBody,
   Heading,
-  CardFooter,
   Image,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { useFetch } from "../hooks/useFetch";
 import { CartContext } from "../context/CartContext";
-import { useContext } from "react";
+import { useUser } from "../context/UserContext";
 import Cart from "../components/Cart";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { data, loading, error } = useFetch();
-  const { updateQuantity } = useContext(CartContext);
+  const { updateQuantity, addToCart, cart } = useContext(CartContext);
   const navigate = useNavigate();
-  console.log(id);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
+  const { user } = useUser();
 
-  const product = useMemo(() => {
-    return data?.find((e) => e.id === id);
-  }, [id, data]);
+  const product = useMemo(() => data?.find((e) => e.id === id), [id, data]);
+  const cartItem = cart.find((item) => item.id === product?.id);
+
+  const handleClick = () => {
+    if (user) {
+      addToCart(product);
+    } else {
+      onOpen();
+    }
+  };
+
+  const handleQuantityChange = (amount) => {
+    if (cartItem) {
+      const newQuantity = cartItem.quantity + amount;
+      if (newQuantity > 0) {
+        updateQuantity(cartItem.id, newQuantity);
+      }
+    } else {
+      addToCart({ ...product, quantity: 1 });
+    }
+  };
 
   if (loading) {
     return (
-      <VStack justify="center">
+      <VStack justify="center" h="80vh">
         <Spinner size="lg" />
       </VStack>
     );
@@ -42,91 +70,100 @@ const ProductDetails = () => {
     return <Text color="red.500">Error al cargar los datos.</Text>;
   }
 
+  if (!product) {
+    return <Error404 />;
+  }
+
   return (
-    
-    <VStack>
-      <Cart/>
-      {product ? (
-        <Card
-          key={product.id}
-          direction={{ base: "column", sm: "row" }}
-          overflow="hidden"
-          variant="outline"
+    <VStack spacing={6} p={8} align="center">
+      {user && <Cart />}
+      <Card w="full" maxW="900px" p={6} shadow="lg" borderRadius="lg">
+        <Grid
+          templateColumns={{ base: "1fr", md: "1fr 2fr" }}
+          gap={6}
+          alignItems="center"
         >
-          <Image
-            objectFit="cover"
-            /* maxW={{ base: "100%", sm: "200px" }} */
-            w={"50%"}
-            src={product.image}
-            alt={product.name}
-          />
-
-          <VStack align="start" w={"50%"} p={50}>
-            <CardBody spacing={20}>
-              <Heading align="start" size="md">
-                {product.name}
-              </Heading>
-
-              <div spacing={"30px"}>
-              <Text py="2">
-                {product.description}
+          <GridItem>
+            <Image
+              src={product.image}
+              alt={product.name}
+              borderRadius="lg"
+              objectFit="cover"
+              maxH="400px"
+              w="100%"
+            />
+          </GridItem>
+          <GridItem>
+            <CardBody>
+              <Heading size="lg">{product.name}</Heading>
+              <Text fontSize="xl" color="orange" fontWeight="bold" mt={2}>
+                ${product.price}
               </Text>
-
-              <Text py="2">
-                Cantidad por pack: {product.characteristics.quantity}
-              </Text>
-              <Text py="2">
-                Tamaño: {product.characteristics.size}
-              </Text>
-              <Text py="2">
-                Papel: {product.characteristics.paper}
-              </Text>
-
-              <Text py="2">
-                Tipo de impresión: {product.characteristics.print}
-              </Text>
-
-              <Text>Cantidad:</Text>
-
-              <ButtonGroup>
-                <Button variant="outlined"
-                  onClick={() => {
-                    if (product.quantity > 1) {
-                      updateQuantity(product.id, product.quantity - 1);
-                    }
-                  }}
-                >
-                 -
+              <Stack spacing={2} mt={4}>
+                <Text>{product.description}</Text>
+              </Stack>
+              <Stack spacing={2} mt={4}>
+                <Text>Medidas: {product.characteristics.size}</Text>
+                <Text>Cantidad: {product.characteristics.quantity}</Text>
+                <Text>Material: {product.characteristics.paper}</Text>
+                <Text>Impresión: {product.characteristics.print}</Text>
+              </Stack>
+              {user && (
+                <Stack direction="row" align="center" mt={4} fontWeight={"bold"} >
+                  <Text color={"orange"} >Cantidad en carrito: </Text>
+                  <ButtonGroup size="sm" alignItems={"center"}>
+                    <Button
+                      onClick={() => handleQuantityChange(-1)}
+                      variant={"unstyled"}
+                     
+                    >
+                      -
+                    </Button>
+                    <Text color={"black"}>{cartItem ? cartItem.quantity : 0}</Text>
+                    <Button
+                      onClick={() => handleQuantityChange(1)}
+                      variant={"unstyled"}
+                     
+                    >
+                      +
+                    </Button>
+                  </ButtonGroup>
+                </Stack>
+              )}
+              <ButtonGroup mt={6}>
+                <Button variant="outlined" onClick={() => navigate(-1)}>
+                  Volver
                 </Button>
-                <Text>{product.quantity} </Text>
-                <Button variant="outlined"
-                  onClick={() => {
-                    updateQuantity(product.id, product.quantity + 1);
-                  }}
-                >
-                  +
-                </Button>
-              </ButtonGroup>
-
-              </div>
-
-              <ButtonGroup>
-              <Button
-                variant="outlined"
-                onClick={() => navigate(-1, { replace: true })}
-              >
-                Volver a la página anterior
-              </Button>
-              <Button variant="solid" colorScheme="blue">
-                Agregar al carrito{" "}
-              </Button>
+                {!user && (<Button colorScheme="blue" onClick={handleClick}>
+                  Agregar al carrito
+                </Button>)}
               </ButtonGroup>
             </CardBody>
-
-          </VStack>
-        </Card>
-      ) : (
-        <Error404 />
+          </GridItem>
+        </Grid>
+      </Card>
+      {!user && (
+        <AlertDialog
+          isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Ingresá a tu cuenta
+              </AlertDialogHeader>
+              <AlertDialogBody>
+                Debés iniciar sesión para agregar productos al carrito.
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cerrar
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       )}
     </VStack>
   );

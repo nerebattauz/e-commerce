@@ -19,7 +19,6 @@ import {
 import { useState, useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { Navigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 
@@ -28,12 +27,13 @@ const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement] = useState("right");
   const {user} = useUser()
+  const navigate = useNavigate();
   const { cart, deleteItem, totalProducts, updateQuantity, totalPrice } =
     useContext(CartContext);
 
     const onSubmit = () => {
       if (user) {
-        Navigate("/checkout");
+        navigate("/checkout"); 
       } else {
         alert("Debes iniciar sesión");
       }
