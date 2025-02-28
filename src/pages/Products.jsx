@@ -2,10 +2,10 @@ import { useState } from "react";
 import { VStack, HStack, Button, Heading } from "@chakra-ui/react";
 import ProductList from "../components/ProductList";
 import Cart from "../components/Cart";
-
+import { useUser } from "../context/UserContext";
 const Products = () => {
   const [filter, setFilter] = useState(""); 
-  
+  const {user} = useUser()
   return (
     <VStack p={20} flex={"flex"} align={"center"} spacing={10}>
       <Heading textAlign={"left"}>Productos</Heading>
@@ -26,7 +26,7 @@ const Products = () => {
           Cuadros
         </Button>
       </HStack>
-      <Cart />
+      {user && <Cart/>} 
       <ProductList filter={filter} />
     </VStack>
   );

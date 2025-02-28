@@ -20,7 +20,6 @@ import {
   Divider,
   VStack,
 } from "@chakra-ui/react";
-import { usePagination } from "../hooks/usePagination";
 import { useFetch } from "../hooks/useFetch";
 import { useUser } from "../context/UserContext";
 import { NavLink } from "react-router-dom";
