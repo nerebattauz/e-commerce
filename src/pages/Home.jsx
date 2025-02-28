@@ -1,5 +1,5 @@
 import Cart from "../components/Cart"
-import Hero from "../components/hero"
+import Hero from "../components/Hero"
 import ProductList from "../components/ProductList"
 import { VStack, Heading } from "@chakra-ui/react"
 import { useUser } from "../context/UserContext"
