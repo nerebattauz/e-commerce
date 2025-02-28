@@ -42,6 +42,7 @@ const Cart = () => {
         bottom={10}
         right={20}
         zIndex="10"
+        bg={"pink"}
       >
         Ver carrito ({totalProducts()})
       </Button>
@@ -125,7 +126,7 @@ const Cart = () => {
             Total: ${totalPrice()}{" "}
           </Text>
           <DrawerFooter>
-            <Button w={"100%"} onClick={onSubmit}>
+            <Button w={"100%"} onClick={onSubmit} >
               Iniciar compra
             </Button>
           </DrawerFooter>

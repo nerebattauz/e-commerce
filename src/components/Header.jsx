@@ -6,7 +6,7 @@ import { useUser } from "../context/UserContext";
 import { Box, Flex, Button, Spacer } from "@chakra-ui/react";
 import { FaCartShopping } from "react-icons/fa6";
 
-const Navbar = () => {
+const Header = () => {
   const { user, logout } = useUser();
 
   if (user) {
@@ -91,4 +91,4 @@ const Navbar = () => {
   }
 };
 
-export default Navbar;
+export default Header;
