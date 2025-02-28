@@ -2,7 +2,7 @@ import { VStack, Heading, Button } from '@chakra-ui/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const hero = () => {
+const Hero = () => {
   return (
     <VStack bg={"pink"} py={35} px={20} borderRadius={20} color={'white'} textAlign={"center"} spacing={5} w={"100%"}>
       <Heading w={"4xl"} >💖🎁✨</Heading>
@@ -13,5 +13,5 @@ const hero = () => {
   )
 }
 
-export default hero
+export default Hero
 
