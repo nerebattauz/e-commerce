@@ -25,7 +25,7 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={user ? <Home /> : <Login />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/checkout" element={<Checkout />}>
+          <Route path="/checkout" element={ user ? <Checkout /> : <Error404 />}>
             <Route path="checkout" element={<Checkout />} />
           </Route>
         </Route>

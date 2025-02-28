@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import "./App.css";
 import AppRoutes from "./routes/AppRoutes.jsx";
-import Navbar from "./components/Navbar.jsx";
+import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
       overflowX="hidden"
       backgroundColor={"#efefef"}
     >
-      <Navbar />
+      <Header />
       <Box flex="1">
         <AppRoutes />
       </Box>
