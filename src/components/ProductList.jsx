@@ -2,8 +2,13 @@ import {
   Stack,
   Spinner,
   Text,
-  Alert,
-  AlertIcon,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure, 
   Card,
   CardBody,
   CardFooter,
@@ -17,15 +22,29 @@ import {
 } from "@chakra-ui/react";
 import { usePagination } from "../hooks/usePagination";
 import { useFetch } from "../hooks/useFetch";
+import { useUser } from "../context/UserContext";
 import { NavLink } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import { useContext } from "react";
+import { useContext, useState, useRef } from "react";
 
 const ProductList = ({ filter }) => {
   const { data, loading, error } = useFetch();
   const { addToCart } = useContext(CartContext);
+  const { user } = useUser();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = useRef();
 
-  const filteredData = filter ? data.filter((product) => product.type === filter) : data;
+  const filteredData = filter
+    ? data.filter((product) => product.type === filter)
+    : data;
+
+  const handleClick = (product) => {
+    if (user) {
+      addToCart(product);
+    } else {
+      onOpen();
+    }
+  };
 
   return (
     <VStack align={"center"} justify={"center"}>
@@ -53,7 +72,11 @@ const ProductList = ({ filter }) => {
           {filteredData.map((product) => (
             <Card w={300} variant={"product"} key={product.id}>
               <CardBody variant={"product"}>
-                <Image src={product.image} alt={product.name} borderRadius="lg" />
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  borderRadius="lg"
+                />
                 <Stack mt="6" spacing="3">
                   <Heading size="sm">{product.name}</Heading>
                   <Text variant={"price"}>${product.price}</Text>
@@ -62,10 +85,18 @@ const ProductList = ({ filter }) => {
               <Divider />
               <CardFooter>
                 <ButtonGroup spacing="2" justifyContent={"center"}>
-                  <Button as={NavLink} to={`/products/${product.id}`} variant="solid" colorScheme="blue">
+                  <Button
+                    as={NavLink}
+                    to={`/products/${product.id}`}
+                    variant="solid"
+                    colorScheme="blue"
+                  >
                     Detalles
                   </Button>
-                  <Button variant="outlined" onClick={() => addToCart(product)}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleClick(product)}
+                  >
                     Agregar al carrito
                   </Button>
                 </ButtonGroup>
@@ -73,6 +104,30 @@ const ProductList = ({ filter }) => {
             </Card>
           ))}
         </SimpleGrid>
+      )}
+
+      {!user && (
+        <AlertDialog
+          isOpen={isOpen}
+          leastDestructiveRef={cancelRef}
+          onClose={onClose}
+        >
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                Ingresá a tu cuenta
+              </AlertDialogHeader>
+              <AlertDialogBody>
+                Debés iniciar sesión para agregar productos al carrito.
+              </AlertDialogBody>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onClose}>
+                  Cerrar
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
       )}
     </VStack>
   );

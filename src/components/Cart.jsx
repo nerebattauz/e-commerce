@@ -33,14 +33,14 @@ const Cart = () => {
 
     const onSubmit = () => {
       if (user) {
-        navigate("/checkout");
+        Navigate("/checkout");
       } else {
         alert("Debes iniciar sesión");
       }
     };
 
   return (
-    <>
+    <> 
       <Button
         onClick={onOpen}
         variant={"solid"}
@@ -138,6 +138,8 @@ const Cart = () => {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+      
+    
     </>
   );
 };

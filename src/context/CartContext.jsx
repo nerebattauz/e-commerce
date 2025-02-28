@@ -11,72 +11,90 @@ export const CartProvider = ({ children }) => {
 
   const saveCartToFirestore = async (cartItems) => {
     if (!user) return;
+  
     try {
+      console.log("Intentando guardar en Firestore:", cartItems);
       const cartRef = doc(db, "carts", user.uid);
-      await setDoc(cartRef, { items: cartItems });
+      await setDoc(cartRef, { items: cartItems }, { merge: true });
+      console.log("Carrito guardado con éxito en Firestore.");
     } catch (error) {
       console.error("Error al guardar el carrito en Firestore:", error);
     }
   };
 
-  // Escuchar cambios en tiempo real del carrito en Firestore
-  useEffect(() => {
+  const loadCartFromFirestore = async () => {
     if (!user) return;
 
-    const cartRef = doc(db, "carts", user.uid);
-    const unsubscribe = onSnapshot(cartRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setCart(docSnap.data().items);
+    try {
+      const cartRef = doc(db, "carts", user.uid);
+      const cartSnap = await getDoc(cartRef);
+
+      if (cartSnap.exists() && cartSnap.data().items) {
+        setCart(cartSnap.data().items);
+      } else {
+        setCart([]);
       }
-    });
+    } catch (error) {
+      console.error("Error al cargar el carrito desde Firestore:", error);
+    }
+  };
 
-    return () => unsubscribe();
-  }, [user]);
+  // Escuchar cambios en tiempo real del carrito en Firestore
+  useEffect(() => {
+    if (user) {
+      console.log("Cargando carrito desde Firestore");
+      loadCartFromFirestore();
+    }
+  }, [user]); // Se ejecuta cuando el usuario cambia
+  
+  useEffect(() => {
+    if (user && cart.length > 0) {
+      console.log("Guardando carrito en Firestore", cart);
+      saveCartToFirestore(cart);
+    }
+  }, [cart]); 
 
-  // Agregar productos al carrito
   const addToCart = (product) => {
     setCart((prev) => {
       const existingProduct = prev.find((item) => item.id === product.id);
-      let updatedCart;
-
       if (existingProduct) {
-        updatedCart = prev.map((item) =>
+        return prev.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       } else {
-        updatedCart = [...prev, { ...product, quantity: 1 }];
+        return [...prev, { ...product, quantity: 1 }];
       }
-
-      saveCartToFirestore(updatedCart);
-      return updatedCart;
     });
   };
-
-  // Eliminar productos del carrito
+  
   const deleteItem = (id) => {
-    setCart((prev) => {
-      const updatedCart = prev.filter((item) => item.id !== id);
-      saveCartToFirestore(updatedCart);
-      return updatedCart;
-    });
+    setCart((prev) => prev.filter((item) => item.id !== id));
   };
-
-  // Actualizar cantidad de productos
+  
   const updateQuantity = (id, newQuantity) => {
-    setCart((prev) => {
-      const updatedCart = prev.map((item) =>
+    setCart((prev) =>
+      prev.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
-      );
-      saveCartToFirestore(updatedCart);
-      return updatedCart;
-    });
+      )
+    );
   };
 
-  const totalProducts = () => cart.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = () => cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  const totalProducts = () =>
+    cart.reduce((total, item) => total + item.quantity, 0);
+  const totalPrice = () =>
+    cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ addToCart, deleteItem, updateQuantity, totalProducts, cart, totalPrice }}>
+    <CartContext.Provider
+      value={{
+        addToCart,
+        deleteItem,
+        updateQuantity,
+        totalProducts,
+        cart,
+        totalPrice,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
