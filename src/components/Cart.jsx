@@ -21,6 +21,8 @@ import { CartContext } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Navigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
+
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -29,9 +31,13 @@ const Cart = () => {
   const { cart, deleteItem, totalProducts, updateQuantity, totalPrice } =
     useContext(CartContext);
 
-  const onSubmit = () => {
-    user ? Navigate("/checkout") : Alert()
-  };
+    const onSubmit = () => {
+      if (user) {
+        navigate("/checkout");
+      } else {
+        alert("Debes iniciar sesión");
+      }
+    };
 
   return (
     <>
