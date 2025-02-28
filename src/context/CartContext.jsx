@@ -1,6 +1,6 @@
-import { useState, createContext, useContext, useEffect } from "react";
+import { useState, createContext, useEffect, useContext } from "react";
 import { db } from "../firebase/config";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, onSnapshot } from "firebase/firestore";
 import { useUser } from "./UserContext";
 
 export const CartContext = createContext();
@@ -9,10 +9,8 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const { user } = useUser();
 
-  
   const saveCartToFirestore = async (cartItems) => {
-    if (!user) return; 
-
+    if (!user) return;
     try {
       const cartRef = doc(db, "carts", user.uid);
       await setDoc(cartRef, { items: cartItems });
@@ -21,29 +19,18 @@ export const CartProvider = ({ children }) => {
     }
   };
 
- //Cargar el carrito desde Firestore al iniciar sesión
-  const loadCartFromFirestore = async () => {
+  // Escuchar cambios en tiempo real del carrito en Firestore
+  useEffect(() => {
     if (!user) return;
 
-    try {
-      const cartRef = doc(db, "carts", user.uid);
-      const cartSnap = await getDoc(cartRef);
-
-      if (cartSnap.exists()) {
-        setCart(cartSnap.data().items);
+    const cartRef = doc(db, "carts", user.uid);
+    const unsubscribe = onSnapshot(cartRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setCart(docSnap.data().items);
       }
-    } catch (error) {
-      console.error("Error al cargar el carrito desde Firestore:", error);
-    }
-  };
+    });
 
-//Cargar carrito cuando el usuario inicie sesión
-  useEffect(() => {
-    if (user) {
-      loadCartFromFirestore();
-    } else {
-      setCart([]);
-    }
+    return () => unsubscribe();
   }, [user]);
 
   // Agregar productos al carrito
@@ -69,7 +56,7 @@ export const CartProvider = ({ children }) => {
   const deleteItem = (id) => {
     setCart((prev) => {
       const updatedCart = prev.filter((item) => item.id !== id);
-      saveCartToFirestore(updatedCart); 
+      saveCartToFirestore(updatedCart);
       return updatedCart;
     });
   };
@@ -80,7 +67,7 @@ export const CartProvider = ({ children }) => {
       const updatedCart = prev.map((item) =>
         item.id === id ? { ...item, quantity: newQuantity } : item
       );
-      saveCartToFirestore(updatedCart); // Guardar en Firestore
+      saveCartToFirestore(updatedCart);
       return updatedCart;
     });
   };

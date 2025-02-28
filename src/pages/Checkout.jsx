@@ -25,7 +25,7 @@ const Checkout = () => {
   const cancelRef = useRef();
 
   return (
-    <VStack p={10} spacing={6} align="center">
+    <VStack p={20} spacing={6} align="center">
       <Heading>Tu carrito</Heading>
 
       {cart.length === 0 ? (
@@ -45,7 +45,7 @@ const Checkout = () => {
               <Button onClick={() => item.quantity > 1 && updateQuantity(item.id, item.quantity - 1)} variant="unstyled" color="grey">-</Button>
               <Text>{item.quantity}</Text>
               <Button onClick={() => updateQuantity(item.id, item.quantity + 1)} variant="unstyled" color="grey">+</Button>
-              <Button onClick={() => deleteItem(item.id)} variant="unstyled" color="orange">
+              <Button onClick={() => deleteItem(item.id)} variant="unstyled" color="orange" align={"center"}>
                 <FaRegTrashAlt />
               </Button>
             </ButtonGroup>
@@ -54,7 +54,7 @@ const Checkout = () => {
       )}
 
       {cart.length > 0 && (
-        <Stack align="center">
+        <Stack align="center" mt={10}>
           <Text fontSize="xl" fontWeight="bold">Total: ${totalPrice()}</Text>
           <Button colorScheme="blue" onClick={onOpen}>Finalizar compra</Button>
         </Stack>

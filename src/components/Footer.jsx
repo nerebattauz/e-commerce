@@ -33,13 +33,13 @@ const Footer = () => {
           
         </VStack>
         <HStack spacing={10} >
-          <Button bg={"pink"} _hover={{ bg: "black" }}  borderRadius={"100%"} w={"50px"} h={"50px"} p={3}>
+          <Button as="a" href="https://www.instagram.com/galatea.dg/" target="_blank" rel="noopener noreferrer" bg={"pink"} _hover={{ bg: "black" }}  borderRadius={"100%"} w={"50px"} h={"50px"} p={3}>
             <FaInstagram size={"auto"} />
           </Button>
-          <Button bg={"pink"} _hover={{ bg: "black" }}  borderRadius={"100%"} w={"50px"} h={"50px"} p={3}>
+          <Button as="a" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" bg={"pink"} _hover={{ bg: "black" }}  borderRadius={"100%"} w={"50px"} h={"50px"} p={3}>
             <FaFacebook size={"30px"} />
           </Button>
-          <Button bg={"pink"} _hover={{ bg: "black" }}  borderRadius={"100%"} w={"50px"} h={"50px"} p={3}>
+          <Button as="a" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" bg={"pink"} _hover={{ bg: "black" }}  borderRadius={"100%"} w={"50px"} h={"50px"} p={3}>
             <FaTiktok size={"30px"} />
           </Button>
         </HStack>
