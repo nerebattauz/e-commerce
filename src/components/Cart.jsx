@@ -14,18 +14,24 @@ import {
   Image,
   DrawerFooter,
   VStack,
+
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Navigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 
 const Cart = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [placement] = useState("right");
+  const {user} = useUser()
   const { cart, deleteItem, totalProducts, updateQuantity, totalPrice } =
     useContext(CartContext);
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    user ? Navigate("/checkout") : Alert()
+  };
 
   return (
     <>

@@ -4,6 +4,7 @@ import { HStack, Image } from "@chakra-ui/react";
 import { NavLink, Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { Box, Flex, Button, Spacer } from "@chakra-ui/react";
+import { FaCartShopping } from "react-icons/fa6";
 
 const Navbar = () => {
   const { user, logout } = useUser();
@@ -33,10 +34,11 @@ const Navbar = () => {
             <Button
               as={NavLink}
               variant={"navButtons"}
-              to="/products"
+              to="/checkout"
               className={({ isActive }) => (isActive ? "active" : "")}
             >
-              Mis pedidos
+              <FaCartShopping />
+
             </Button>
           </HStack>
 
