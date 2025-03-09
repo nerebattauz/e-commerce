@@ -1,7 +1,7 @@
 import { useContext, useState} from "react";
 import { createContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithRedirect, signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useToast } from "@chakra-ui/react";
 import { Alert } from "@chakra-ui/react";
@@ -78,7 +78,7 @@ export const UserProvider = ({ children }) => {
   };
 
   const loginGoogle = () => {
-    signInWithPopup(auth, provider)
+    signInWithRedirect(auth, provider)
     .then((result) => {
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
